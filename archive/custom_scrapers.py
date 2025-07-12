@@ -91,11 +91,47 @@ class CustomRecipeScraper:
         }
 
 
-if __name__ == "__main__":
-    url = "https://www.thekiwicountrygirl.com/boysenberry-white-chocolate-no-bake-cheesecake/"
-    scraper = CustomRecipeScraper(url)
-    scraper.fetch()
-    recipe = scraper.to_dict()
+from recipe_scrapers._abstract import AbstractScraper
+import json
 
-    for key, value in recipe.items():
-        print(f"{key.upper()}:\n{value}\n")
+
+class ChelseaSugarScraper(AbstractScraper):
+    @classmethod
+    def host(cls):
+        return "chelsea.co.nz"
+
+    def __init__(self, url, **kwargs):
+        response = requests.get(url, headers={"User-Agent": "Mozilla/5.0"})
+        response.raise_for_status()
+        html = response.text
+
+        # ✅ Call parent init with both `html` and `url`
+        super().__init__(html, url)
+
+        # ✅ Optional: also keep the parsed JSON-LD
+        self.data = self._extract_json_ld()
+
+    def _extract_json_ld(self):
+        for script in self.soup.find_all("script", type="application/ld+json"):
+            try:
+                content = json.loads(script.string.strip())
+
+                if isinstance(content, list):
+                    for entry in content:
+                        if entry.get("@type") == "Recipe":
+                            return entry
+                elif content.get("@type") == "Recipe":
+                    return content
+            except Exception:
+                continue
+        raise ValueError("No Recipe JSON-LD found")
+
+if __name__ == "__main__":
+    url = "https://www.chelsea.co.nz/browse-recipes/banana-bread/"
+    scraper = ChelseaSugarScraper(url)
+
+    print("Title:", scraper.title())
+    print("Total Time:", scraper.total_time())
+    print("Ingredients:", scraper.ingredients())
+    print("Instructions:", scraper.instructions())
+

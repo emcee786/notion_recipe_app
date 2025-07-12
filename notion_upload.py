@@ -138,7 +138,7 @@ def add_recipe_to_notion(recipe):
 
 if __name__ == "__main__":
     # Load the recipe JSON
-    with open("Boysenberry__White_Chocolate_No_Bake_Cheesecake.json", "r", encoding="utf-8") as f:
+    with open("Super_Moist_Chocolate_Cupcakes.json", "r", encoding="utf-8") as f:
         recipe = json.load(f)
     
     add_recipe_to_notion(recipe)

@@ -1,0 +1,50 @@
+[project]
+name = "recipe-scraper"
+version = "0.1.0"
+description = "Scraper and Notion uploader for recipe websites"
+authors = [{ name = "Your Name", email = "you@example.com" }]
+requires-python = ">=3.11"
+dependencies = [
+    "annotated-types==0.7.0",
+    "anyio==4.9.0",
+    "beautifulsoup4==4.13.4",
+    "certifi==2025.6.15",
+    "charset-normalizer==3.4.2",
+    "distro==1.9.0",
+    "extruct==0.18.0",
+    "h11==0.16.0",
+    "html-text==0.7.0",
+    "html5lib==1.1",
+    "httpcore==1.0.9",
+    "httpx==0.28.1",
+    "idna==3.10",
+    "isodate==0.7.2",
+    "jiter==0.10.0",
+    "jstyleson==0.0.2",
+    "lxml==6.0.0",
+    "lxml-html-clean==0.4.2",
+    "mf2py==2.0.1",
+    "notion-client==2.4.0",
+    "openai==1.93.0",
+    "pydantic==2.11.7",
+    "pydantic-core==2.33.2",
+    "pyparsing==3.2.3",
+    "pyrdfa3==3.6.4",
+    "python-dotenv==1.1.1",
+    "rdflib==7.1.4",
+    "recipe-scrapers==15.8.0",
+    "requests==2.32.4",
+    "six==1.17.0",
+    "sniffio==1.3.1",
+    "soupsieve==2.7",
+    "tqdm==4.67.1",
+    "typing-extensions==4.14.0",
+    "typing-inspection==0.4.1",
+    "urllib3==2.5.0",
+    "w3lib==2.3.1",
+    "webencodings==0.5.1",
+]
+
+[tool.uv]
+# Optional: If you want to generate a lockfile (uv.lock)
+generate-lockfile = true
