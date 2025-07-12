@@ -1,8 +1,5 @@
 from recipe_scrapers._abstract import AbstractScraper
 import json
-
-
-import json
 import requests
 
 

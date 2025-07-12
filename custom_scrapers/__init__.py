@@ -1,0 +1,4 @@
+from .kiwi_country_girl import KiwiCountryGirlScraper
+from .chelsea_sugar import ChelseaSugarScraper
+from .sweetest_menu import SweetestMenuScraper
+from .woolworths_nz import WoolworthsScraper

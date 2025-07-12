@@ -4,37 +4,34 @@ import json
 
 
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-CATEGORIES = ["Dairy", "Produce", "Meat", "Seafood", "Frozen", "Herbs & Spices", "Pantry", "Condiments", "Other"]
 
 
 def simplify_ingredients(ingredient_list):
-    prompt = """
-You are a kitchen assistant.
+    prompt = f"""
+    You're a kitchen assistant.
 
-Your job is to extract a **clean, deduplicated** list of pantry ingredients from raw recipe inputs.
+    Take the raw list of recipe ingredients below and clean it up.
 
-You must follow these rules carefully:
+    Your job is to return a **clean, deduplicated** list of simplified ingredient names.
 
-- Remove all **quantities, units, brands, preparation instructions, and content in parentheses**
-- **Keep important descriptors** that materially change the item identity (e.g., "brown sugar", "vanilla ice cream", "self-raising flour")
-- **Simplify varieties or brand-specific words** that don’t affect the ingredient’s nature 
-  (e.g., "Gala apples" → "Apples", "Butter puff pastry" → "Puff Pastry")
-- **Merge functionally identical items** into a **single canonical form** — 
-  (e.g., "Ground Cinnamon", "Cinnamon Powder" → "Cinnamon"; "Cheddar Cheese", "Shredded Cheese" → "Cheese")
+    Rules to follow:
+    - Remove all **quantities, units, brands, and prep instructions**
+    - **Remove anything in parentheses**
+    - Keep key descriptors that define the ingredient (e.g. "brown sugar", "vanilla extract", "self-raising flour")
+    - Merge duplicates and similar things into one consistent name (e.g. "caster sugar", "granulated sugar" → "Sugar")
 
-Return a valid **Python list of strings** like:
-[
-  "Butter",
-  "Brown Sugar"
-]
+    Return the result as a **valid Python list of strings** like:
+    [
+    "Flour",
+    "Sugar",
+    "Vanilla Extract"
+    ]
 
-**Avoid duplicates by normalizing similar items to a single entry.**
+    Ingredients:
+    {ingredient_list}
 
-Ingredients:
-{ingredient_list}
-
-Output:
-"""
+    Output:
+    """
 
     response = client.chat.completions.create(
         model="gpt-3.5-turbo",
@@ -61,6 +58,7 @@ def add_pantry_items_to_json(file_path):
 
     ingredients = recipe.get("ingredients", [])
     pantry_items = simplify_ingredients(ingredients)
+    print(ingredients)
 
     # Deduplicate case-insensitively
     seen = set()
@@ -83,4 +81,4 @@ def add_pantry_items_to_json(file_path):
 
 
 if __name__ == "__main__":
-    add_pantry_items_to_json("Super_Moist_Chocolate_Cupcakes.json") 
+    add_pantry_items_to_json("Orange_and_Poppy_Seed_Cake.json") 
